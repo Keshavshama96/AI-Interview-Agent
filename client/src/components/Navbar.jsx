@@ -8,12 +8,15 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { setUserData } from '../redux/userSlice'
 import { ServerUrl } from '../App'
+import AuthModel from './AuthModel'
 function Navbar() {
     const {userData} = useSelector((state)=>state.user)
     const [showCreditPopup,setShowCreditPopup] = useState(false)
     const [showUserPopup,setShowUserPopup] = useState(false)
     const navigate = useNavigate()
     const dispatch=useDispatch()
+    const [showAuth, setShowAuth] = useState(false);
+
     
      const handleLogout = async () => {
         try {
@@ -47,7 +50,11 @@ function Navbar() {
       <div className='flex items-center gap-6 relative'>
     <div className='relative'>
         <button 
-         onClick={()=>{setShowCreditPopup(!showCreditPopup);
+         onClick={()=>{
+            if(!userData){
+                setShowAuth(true)
+                return
+            }setShowCreditPopup(!showCreditPopup);
         setShowUserPopup(false)
         }}
         className='flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full text-md hover:bg-gray-200 transition'>
@@ -64,12 +71,16 @@ function Navbar() {
 
     </div>
 
-     <div
-     onClick={()=>{setShowUserPopup(!showUserPopup);
+     <div className='relative'>
+    <button 
+    onClick={()=>{
+        if(!userData){
+         setShowAuth(true)
+        return
+         }setShowUserPopup(!showUserPopup);
         setShowCreditPopup(false)
         }}
-     className='relative'>
-    <button className='w-9 h-9 bg-black text-white rounded-full flex items-center justify-center font-semibold'>
+    className='w-9 h-9 bg-black text-white rounded-full flex items-center justify-center font-semibold'>
         {userData ? userData?.name.slice(0,1).toUpperCase() : <FaUserAstronaut size={16}/>}
     </button>
       
@@ -91,6 +102,9 @@ className='w-full text-left text-sm py-2 flex items-center gap-2 text-red-500'>
        </div>
 
   </motion.div>
+
+      {showAuth && <AuthModel onClose={()=>setShowAuth(false)}/>}
+
 
     </div>
   )
