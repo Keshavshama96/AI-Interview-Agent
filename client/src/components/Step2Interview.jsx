@@ -370,8 +370,8 @@ useEffect(() => {
   </div>
 
   <div>
-    <span className='text-2xl font-bold text-emerald-600'>5</span>
-    <span className='text-xs text-gray-400'>{questions.length}</span>
+    <span className='text-2xl font-bold text-emerald-600'>  {questions.length}</span>
+    <span className='text-xs text-gray-400'>Total Questions</span>
   </div>
 </div>
 
